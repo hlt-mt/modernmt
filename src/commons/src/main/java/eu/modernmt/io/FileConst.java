@@ -7,7 +7,7 @@ import java.io.File;
  */
 public class FileConst {
 
-    private static final String SYSPROP_MMT_HOME = System.getenv("MMT_HOME");
+    private static final String SYSPROP_MMT_HOME = "mmt.home";
 
     private static File _home = null;
     private static File _resourcePath = null;
@@ -18,7 +18,7 @@ public class FileConst {
 
     private static File getHome() {
         if (_home == null) {
-            String home = SYSPROP_MMT_HOME;
+            String home = System.getProperty(SYSPROP_MMT_HOME);
             if (home == null)
                 throw new IllegalStateException("The system property '" + SYSPROP_MMT_HOME + "' must be initialized to the path of MMT installation.");
 
