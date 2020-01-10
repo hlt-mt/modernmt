@@ -7,6 +7,7 @@ import eu.modernmt.model.Tag;
 import eu.modernmt.model.Word;
 import eu.modernmt.model.XMLTag;
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -228,6 +229,7 @@ public class PreprocessorTest {
 
 
     @Test
+    @Ignore
     public void testAllCasedOpennlp() throws ProcessingException {
         String text = "VAGTSKIFTE I STATSMINISTERIET STYRKER METTE FREDERIKSEN";
         Sentence sentence = process(text, new LanguageDirection(Language.DANISH, Language.DANISH));
@@ -249,6 +251,7 @@ public class PreprocessorTest {
     }
 
     @Test
+    @Ignore
     public void testMixedCasedOpennlp() throws ProcessingException {
         String text = "VAGTSKIFTE i Statsministeriet STYRKER mette Frederiksen";
         Sentence sentence = process(text, new LanguageDirection(Language.DANISH, Language.DANISH));
