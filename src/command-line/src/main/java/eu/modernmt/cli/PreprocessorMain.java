@@ -43,13 +43,13 @@ public class PreprocessorMain {
         }
 
         public final LanguageDirection language;
-        public final boolean printTags;
-        public final boolean printPlaceholders;
-        public final boolean keepSpaces;
-        public final boolean batch;
-        public final boolean split;
+        private final boolean printTags;
+        private final boolean printPlaceholders;
+        private final boolean keepSpaces;
+        private final boolean batch;
+        private final boolean split;
 
-        public Args(String[] args) throws ParseException {
+        private Args(String[] args) throws ParseException {
             CommandLineParser parser = new DefaultParser();
             CommandLine cli = parser.parse(cliOptions, args);
 
@@ -91,7 +91,7 @@ public class PreprocessorMain {
         }
     }
 
-    private static void interactivePreprocess(Preprocessor preprocessor, LanguageDirection language, LineReader input, Outputter output, boolean split) throws IOException, ProcessingException {
+    protected static void interactivePreprocess(Preprocessor preprocessor, LanguageDirection language, LineReader input, Outputter output, boolean split) throws IOException, ProcessingException {
         String line;
         while ((line = input.readLine()) != null) {
             Sentence sentence = preprocessor.process(language, line);
@@ -99,7 +99,7 @@ public class PreprocessorMain {
         }
     }
 
-    private static void batchPreprocess(Preprocessor preprocessor, LanguageDirection language, LineReader input, Outputter output, boolean split) throws IOException, ProcessingException {
+    protected static void batchPreprocess(Preprocessor preprocessor, LanguageDirection language, LineReader input, Outputter output, boolean split) throws IOException, ProcessingException {
         BufferedLineReader bufferedReader = new BufferedLineReader(input);
 
         String[] batch;
@@ -124,13 +124,13 @@ public class PreprocessorMain {
         }
     }
 
-    private interface Outputter extends Closeable {
+    protected interface Outputter extends Closeable {
 
         void write(Sentence value) throws IOException;
 
     }
 
-    private static class SentenceOutputter implements Outputter {
+    protected static class SentenceOutputter implements Outputter {
 
         private final UnixLineWriter writer;
         private final boolean printTags;
@@ -153,7 +153,7 @@ public class PreprocessorMain {
         }
     }
 
-    private static class TokensOutputter implements Outputter {
+    protected static class TokensOutputter implements Outputter {
 
         private final TokensOutputStream stream;
 

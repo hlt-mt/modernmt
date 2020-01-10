@@ -42,10 +42,10 @@ public class PostprocessorMain {
         }
 
         public final LanguageDirection language;
-        public final File source;
-        public final File alignment;
+        private final File source;
+        private final File alignment;
 
-        public Args(String[] args) throws ParseException {
+        private Args(String[] args) throws ParseException {
             CommandLineParser parser = new DefaultParser();
             CommandLine cli = parser.parse(cliOptions, args);
 
