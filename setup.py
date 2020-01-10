@@ -214,6 +214,33 @@ def copy_opennlp_resources():
     chown(mmt.MMT_RES_DIR, *get_owner(mmt.MMT_BUILD_DIR))
 
 
+def copy_recaser_resources():
+
+### TODO: IMPLEMENT DOWNLOADING OF THE RECASER MODELS
+        recaser_home = os.path.join(mmt.MMT_VENDOR_DIR, 'UppercaseRecaser')
+        assert os.path.exists(recaser_home)
+
+        recaser_res = os.path.join(mmt.MMT_RES_DIR, 'UppercaseRecaser')
+        if not os.path.exists(recaser_res):
+            os.makedirs(recaser_res)
+
+        files = [f for f in os.listdir(recaser_home) if f.endswith('.cased') or f.endswith('.voc')]
+
+        progressbar = Progressbar('Downloading UppercaseRecaser')
+        progressbar.start()
+
+        count = 0
+        try:
+            for filename in files:
+                shutil.copyfile(os.path.join(recaser_home, filename), os.path.join(recaser_res, filename))
+                count += 1
+                progressbar.set_progress(count / float(len(files)))
+        finally:
+            progressbar.complete()
+
+        chown(mmt.MMT_RES_DIR, *get_owner(mmt.MMT_BUILD_DIR))
+
+
 def pip_install():
     requirements_txt = os.path.join(mmt.MMT_HOME_DIR, 'requirements.txt')
     osutils.shell_exec(['pip3', 'install', '-r', requirements_txt], stderr=sys.stderr, stdout=sys.stdout)
@@ -229,6 +256,8 @@ def main(argv=None):
                         help='skip Apache Kafka download')
     parser.add_argument('--skip-cassandra', dest='skip_cassandra', action='store_true', default=False,
                         help='skip Apache Cassandra download')
+    parser.add_argument('--skip-recaser', dest='skip_recaser', action='store_true', default=False,
+                        help='skip Recaser download')
 
     args = parser.parse_args(argv)
 
@@ -242,6 +271,10 @@ def main(argv=None):
         install_kafka()
 
     copy_opennlp_resources()
+
+### ACTIVATE WHEN DOWNLOADING OF RECASER MODELS IS READY
+#    if not args.skip_recaser:
+#        copy_recaser_resources()
 
 
 if __name__ == '__main__':
