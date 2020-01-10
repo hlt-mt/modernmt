@@ -58,22 +58,8 @@ public class Engine implements Closeable, DataListenerProvider {
         String name = config.getName();
         LanguageIndex languageIndex = config.getLanguageIndex();
 
+
         File models = Paths.join(FileConst.getEngineRoot(name), "models");
-
-        Preprocessor preprocessor;
-        try {
-            preprocessor = new Preprocessor();
-        } catch (IOException e) {
-            throw new BootstrapException("Failed to load pre-processor", e);
-        }
-
-        Postprocessor postprocessor;
-        try {
-            postprocessor = new Postprocessor();
-        } catch (IOException e) {
-            throw new BootstrapException("Failed to load post-processor", e);
-        }
-
         AlignerConfig alignerConfig = config.getAlignerConfig();
         Aligner aligner = null;
         if (alignerConfig.isEnabled()) {
@@ -125,6 +111,21 @@ public class Engine implements Closeable, DataListenerProvider {
                     throw new BootstrapException("Failed to instantiate decoder", cause);
                 }
             }
+        }
+
+
+        Preprocessor preprocessor;
+        try {
+            preprocessor = new Preprocessor(decoder.getPreprocessingConfig());
+        } catch (IOException e) {
+            throw new BootstrapException("Failed to load pre-processor", e);
+        }
+
+        Postprocessor postprocessor;
+        try {
+            postprocessor = new Postprocessor(decoder.getPostprocessingConfig());
+        } catch (IOException e) {
+            throw new BootstrapException("Failed to load post-processor", e);
         }
 
         return new Engine(name, languageIndex, aligner, preprocessor, postprocessor, contextAnalyzer, decoder);

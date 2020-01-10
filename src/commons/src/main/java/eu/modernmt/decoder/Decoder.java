@@ -33,6 +33,8 @@ public abstract class Decoder implements Closeable {
 
     public abstract void test() throws DecoderException;
 
+    public abstract String getPreprocessingConfig();
 
+    public abstract String getPostprocessingConfig();
 
 }

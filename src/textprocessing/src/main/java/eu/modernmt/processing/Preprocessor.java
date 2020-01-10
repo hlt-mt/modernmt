@@ -35,6 +35,14 @@ public class Preprocessor implements Closeable {
         this(threads, getDefaultBuilder());
     }
 
+    public Preprocessor(String configFilename) throws IOException {
+        this(DEFAULT_THREADS, getBuilder(configFilename));
+    }
+
+    public Preprocessor(int threads, String configFilename) throws IOException {
+        this(threads, getBuilder(configFilename));
+    }
+
     public Preprocessor(int threads, XMLPipelineBuilder<String, Sentence> builder) {
         this.executor = new PipelineExecutor<>(builder, threads);
         this.threads = threads;
@@ -88,10 +96,7 @@ public class Preprocessor implements Closeable {
         }
     }
 
-    private static XMLPipelineBuilder<String, Sentence> getDefaultBuilder() throws IOException {
-        String xmlPath = Preprocessor.class.getPackage().getName().replace('.', '/');
-        xmlPath = xmlPath + "/preprocessor-default.xml";
-
+    private static XMLPipelineBuilder<String, Sentence> getBuilder(String xmlPath) throws IOException {
         InputStream stream = null;
 
         try {
@@ -105,4 +110,11 @@ public class Preprocessor implements Closeable {
         }
     }
 
+    private static XMLPipelineBuilder<String, Sentence> getDefaultBuilder() throws IOException {
+        return getBuilder(getProcessingConfig());
+    }
+
+    public static String getProcessingConfig() {
+        return Preprocessor.class.getPackage().getName().replace('.', '/') + "/preprocessor-default.xml";
+    }
 }

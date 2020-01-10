@@ -29,6 +29,13 @@ public class Postprocessor implements Closeable {
         this(threads, getDefaultBuilder());
     }
 
+    public Postprocessor(String configFilename) throws IOException {
+        this(DEFAULT_THREADS, getBuilder(configFilename));
+    }
+    public Postprocessor(int threads, String configFilename) throws IOException {
+        this(threads, getBuilder(configFilename));
+    }
+
     public Postprocessor(int threads, XMLPipelineBuilder<Translation, Void> builder) throws IOException {
         this.executor = new PipelineExecutor<>(builder, threads);
     }
@@ -57,9 +64,7 @@ public class Postprocessor implements Closeable {
         }
     }
 
-    private static XMLPipelineBuilder<Translation, Void> getDefaultBuilder() throws IOException {
-        String xmlPath = Postprocessor.class.getPackage().getName().replace('.', '/');
-        xmlPath = xmlPath + "/postprocessor-default.xml";
+    private static XMLPipelineBuilder<Translation, Void> getBuilder(String xmlPath) throws IOException {
         InputStream stream = null;
 
         try {
@@ -73,4 +78,11 @@ public class Postprocessor implements Closeable {
         }
     }
 
+    private static XMLPipelineBuilder<Translation, Void> getDefaultBuilder() throws IOException {
+        return getBuilder(getProcessingConfig());
+    }
+
+    public static String getProcessingConfig() {
+        return Postprocessor.class.getPackage().getName().replace('.', '/') + "/postprocessor-default.xml";
+    }
 }

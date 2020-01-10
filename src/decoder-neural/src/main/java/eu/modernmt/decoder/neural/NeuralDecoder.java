@@ -18,6 +18,8 @@ import eu.modernmt.model.ContextVector;
 import eu.modernmt.model.Priority;
 import eu.modernmt.model.Sentence;
 import eu.modernmt.model.Translation;
+import eu.modernmt.processing.Preprocessor;
+import eu.modernmt.processing.Postprocessor;
 import eu.modernmt.processing.splitter.SentenceSplitter;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -249,6 +251,16 @@ public class NeuralDecoder extends Decoder implements DataListenerProvider {
 
         IOUtils.closeQuietly(this.decoderQueue);
         IOUtils.closeQuietly(this.memory);
+    }
+
+    @Override
+    public String getPreprocessingConfig() {
+        return Preprocessor.getProcessingConfig();
+    }
+
+    @Override
+    public String getPostprocessingConfig() {
+        return Postprocessor.getProcessingConfig();
     }
 
 }
