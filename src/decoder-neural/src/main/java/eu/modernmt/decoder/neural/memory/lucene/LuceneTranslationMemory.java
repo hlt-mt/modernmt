@@ -378,4 +378,9 @@ public class LuceneTranslationMemory implements TranslationMemory {
             throw error;
     }
 
+    @Override
+    public ScoreEntry[] filter(ScoreEntry[] entries) {
+        //This filter does not do anything
+        return entries;
+    }
 }

@@ -67,4 +67,5 @@ public interface TranslationMemory extends Closeable, LogDataListener {
 
     void dump(long memory, Consumer<Entry> consumer) throws IOException;
 
+    ScoreEntry[] filter(ScoreEntry[] entries);
 }
