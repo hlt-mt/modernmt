@@ -160,8 +160,11 @@ public class NeuralDecoder extends Decoder implements DataListenerProvider {
                         "   suggestions = [\n");
 
                 if (suggestions != null) {
-                    for (ScoreEntry entry : suggestions)
-                        log.append("      ").append(entry).append('\n');
+                    for (ScoreEntry entry : suggestions) {
+                        if (entry.score > .0f) {
+                            log.append("      ").append(entry).append('\n');
+                        }
+                    }
                 }
 
                 log.append("   ]");
